@@ -3,8 +3,12 @@ package by.bsu.fpm.atroschens.lab33;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.Shader;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -116,10 +120,17 @@ public class MainActivity extends Activity {
                 if (resultCode == RESULT_OK) {
                     Uri selectedImage = data.getData();
                     try {
-                        MediaStore.Images.Media.getBitmap(
+                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(
                                 getContentResolver(),
                                 selectedImage
                         );
+
+                        BitmapDrawable background =
+                                new BitmapDrawable(this.getResources(), bitmap);
+
+                        background.setTileModeXY(Shader.TileMode.REPEAT,
+                                Shader.TileMode.REPEAT);
+                        rootLayout.setBackground(background);
                     } catch (IOException e) {
                         return;
                     }
